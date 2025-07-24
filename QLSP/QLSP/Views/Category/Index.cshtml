@@ -1,0 +1,46 @@
+﻿@using QLSP.Controllers
+@model CategoryViewModel
+
+<h1>Danh sách Danh mục Sản phẩm</h1>
+<div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm</button>
+</div>
+<form asp-controller="Category" asp-action="Index" class="d-flex g-3">
+    <div class="flex-grow-1 me-3">
+        <input type="text" class="form-control" id="keyWord" name="keyWord" value="@Model.KeyWord" placeholder="Nhập từ cần tìm">
+    </div>
+    <div class="">
+        <button type="submit" class="btn btn-info mb-3"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+    </div>
+</form>
+<table class="table table-bordered table-hover">
+    <tr class="table-success text-center">
+        <th>STT</th>
+        <th>Mã danh mục</th>
+        <th>Tên danh mục</th>
+        <th>Thao tác</th>
+    </tr>
+    @if (Model.Categories != null)
+    {
+        int index = 1;
+        foreach(var category in Model.Categories)
+        {
+            <tr>
+                <td>@(index++)</td>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <button class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</button>
+                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="3">Không có danh mục nào cả</td>
+        </tr>
+    }
+
+</table>
