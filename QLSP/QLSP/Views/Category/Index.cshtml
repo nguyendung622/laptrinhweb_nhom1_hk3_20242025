@@ -3,7 +3,7 @@
 
 <h1>Danh sách Danh mục Sản phẩm</h1>
 <div class="d-flex justify-content-end mb-3">
-    <button class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm</button>
+    <a asp-action="Create" asp-controller="Category" class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm</a>
 </div>
 <form asp-controller="Category" asp-action="Index" class="d-flex g-3">
     <div class="flex-grow-1 me-3">
@@ -30,7 +30,7 @@
                 <td>@category.Id</td>
                 <td>@category.Name</td>
                 <td>
-                    <button class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</button>
+                    <a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
                     <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
                 </td>
             </tr>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QLSP.Models;
+using System.Net.WebSockets;
 
 namespace QLSP.Controllers
 {
@@ -28,6 +29,63 @@ namespace QLSP.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(CategoryViewModel model)
+        {
+            var category = _context.Categories.Where(e=>e.Name == model.Request.Name).FirstOrDefault();
+            if (category != null)
+            {
+                ViewData["name"] = model.Request.Name;   
+                ViewData["message"] = "Tên danh mục này đã tồn tại";
+                return View();
+            }
+            else
+            {
+                category = new Category
+                {
+                    Name = model.Request.Name
+                };
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Update(long id)
+        {
+            CategoryViewModel model = new CategoryViewModel();
+            var category = _context.Categories.Where(e => e.Id == id).Select(e => new CategoryDTO
+            {
+                Id = e.Id,
+                Name = e.Name
+            }).FirstOrDefault();
+            model.Response = category;
+            return View(model);
+        }
+        [HttpPost]
+        public IActionResult Update(CategoryViewModel model)
+        {
+            var category = _context.Categories.Where(e => e.Id == model.Request.Id).FirstOrDefault();
+            if (category != null)
+            {
+                category.Name = model.Request.Name;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewData["message"] = "Không tìm thấy đối tượng";
+                return View(model);
+            }
+        }
+
         List<CategoryDTO> genData()
         {
             var ls = new List<CategoryDTO>();
@@ -41,6 +99,8 @@ namespace QLSP.Controllers
     {
         public string KeyWord { get; set; }
         public List<CategoryDTO> Categories { get; set; }
+        public CategoryDTO Request { get; set; }
+        public CategoryDTO Response { get; set; }
     }
     public class CategoryDTO
     {

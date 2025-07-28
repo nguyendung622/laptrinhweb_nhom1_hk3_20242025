@@ -1,0 +1,27 @@
+﻿@model QLSP.Controllers.CategoryViewModel
+<h1>Chỉnh sửa danh mục sản phẩm</h1>
+<form asp-action="Update" method="post">
+    <div class="mb-3">
+        <label for="nameCategory" class="form-label">Tên danh mục</label>
+        <input type="text" class="form-control" id="nameCategory"
+               asp-for="Request.Name" value="@Model.Response?.Name">
+
+        <input type="hidden" class="form-control" id="idCategory"
+               asp-for="Request.Id" value="@Model.Response?.Id">
+    </div>
+
+    <a asp-action="Index" asp-controller="Category" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i>
+        Quay lại
+    </a>
+    <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-plus"></i>
+        Cập nhật
+    </button>
+    @if (ViewData["message"] != null)
+    {
+        <div class="mt-3 alert alert-danger">
+            @ViewData["message"]
+        </div>
+    }
+</form>
