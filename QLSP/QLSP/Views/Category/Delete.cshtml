@@ -1,0 +1,18 @@
+﻿@model QLSP.Controllers.CategoryViewModel
+<h1>Xóa danh mục sản phẩm</h1>
+<form asp-action="Delete" method="post">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <div>
+            Bạn có chắc là muốn xóa danh mục @Model.Response.Name?
+        </div>
+    </div>
+    <input type="hidden" asp-for="Request.Id" value="@Model.Response.Id" />
+    <a asp-action="Index" asp-controller="Category" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i>
+        Quay lại
+    </a>
+    <button type="submit" class="btn btn-danger">
+        <i class="fa-solid fa-trash"></i>
+        Xóa
+    </button>
+</form>

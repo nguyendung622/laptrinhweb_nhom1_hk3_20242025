@@ -22,19 +22,37 @@
     </tr>
     @if (Model.Categories != null)
     {
-        int index = 1;
-        foreach(var category in Model.Categories)
+        int index = Model.PagingInfo.PageSize * (Model.PagingInfo.PageIndex - 1);
+        foreach (var category in Model.Categories)
         {
             <tr>
-                <td>@(index++)</td>
+                <td>@(++index)</td>
                 <td>@category.Id</td>
                 <td>@category.Name</td>
                 <td>
                     <a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
-                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
+                    <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
                 </td>
             </tr>
         }
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                </li>
+                @for (int i = 1; i <= Model.PagingInfo.PageCount; i++)
+                {
+                    <li class="page-item @(Model.PagingInfo.PageIndex==i?"active":"")">
+                        <a class="page-link" asp-action="Index" asp-route-pageIndex="@i">@i</a>
+                    </li>
+                }
+
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+
     }
     else
     {
