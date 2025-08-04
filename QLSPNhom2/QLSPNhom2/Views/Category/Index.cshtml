@@ -1,0 +1,54 @@
+﻿@model QLSPNhom2.ViewModel.CategoryViewModel
+<h1>Danh sách Danh mục Sản phẩm</h1>
+<div class="d-flex justify-content-end">
+    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</button>
+</div>
+<form asp-controller="Category" asp-action="Index" method="post">
+    <div class="d-flex mt-3 mb-3">
+        <input name="keyWord" class="flex-grow-1 me-1 form-control" type="text" placeholder="Nhập từ khóa cần tìm" />
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+    </div>
+</form>
+
+<table class="table table-hover table-bordered">
+    <tr class="table-primary text-center">
+        <th>STT</th>
+        <th>Mã danh mục</th>
+        <th>Tên danh mục</th>
+        <th>Thao tác</th>
+    </tr>
+    @if (Model.Categories != null)
+    {
+        int i = 0;
+        foreach (var cat in Model.Categories)
+        {
+            <tr>
+                <td>@(++i)</td>
+                <td>@cat.Id</td>
+                <td>@cat.Name</td>
+                <td>
+                    <button class="btn btn-success"><i class="fa-solid fa-pencil"></i> Sửa</button>
+                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="3">Không có danh mục nào</td>
+        </tr>
+    }
+</table>
+
+<nav aria-label="...">
+    <ul class="pagination justify-content-end">
+        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+            <a class="page-link" href="#" aria-current="page">2</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>

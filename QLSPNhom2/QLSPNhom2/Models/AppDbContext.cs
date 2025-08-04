@@ -11,6 +11,7 @@ namespace QLSPNhom2.Models
             //Add-Migration Name
             //Remove-Migration
             //Update-Database
+            //CRUD
         }
     }
 }
