@@ -11,7 +11,7 @@ namespace QLSP.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(string keyWord = "", int pageIndex = 1, int pageSize = 2)
+        public IActionResult Index(string keyWord = "", int pageIndex = 1, int pageSize = 10)
         {
             var pagingInfo = new PagingInfo
             {

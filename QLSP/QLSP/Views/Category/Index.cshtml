@@ -3,7 +3,8 @@
 
 <h1>Danh sách Danh mục Sản phẩm</h1>
 <div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" asp-controller="Category" class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm</a>
+    <a asp-action="Create" asp-controller="Category" class="btn btn-success me-1"><i class="fa-solid fa-plus"></i> Thêm</a>
+    <button data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm V2</button>
 </div>
 <form asp-controller="Category" asp-action="Index" class="d-flex g-3">
     <div class="flex-grow-1 me-3">
@@ -30,8 +31,10 @@
                 <td>@category.Id</td>
                 <td>@category.Name</td>
                 <td>
+                    @*<a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
+            <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>*@
                     <a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
-                    <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+                    <button data-bs-toggle="modal" data-bs-target="#deleteModal_@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
                 </td>
             </tr>
         }
@@ -62,3 +65,39 @@
     }
 
 </table>
+
+<!-- Modal Add -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <partial name="_Create" model="@Model" />
+    </div>
+</div>
+<!--End Modal-->
+@if (Model.Categories != null)
+{
+    foreach (var cat in Model.Categories)
+    {
+        <!-- Modal Delete -->
+        <div class="modal fade" id="deleteModal_@cat.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form asp-action="Delete" asp-controller="Category" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa danh mục</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" asp-for="Request.Id" value="@cat.Id" />
+                            <p>Bạn có chắc là muốn xóa danh mục @cat.Name này không?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--End Modal-->
+    }
+}
