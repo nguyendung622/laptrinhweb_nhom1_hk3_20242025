@@ -1,7 +1,7 @@
 ﻿@model QLSPNhom2.ViewModel.CategoryViewModel
 <h1>Danh sách Danh mục Sản phẩm</h1>
 <div class="d-flex justify-content-end">
-    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</button>
+    <a asp-action="Create" asp-controller="Category" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</a>
 </div>
 <form asp-controller="Category" asp-action="Index" method="post">
     <div class="d-flex mt-3 mb-3">
@@ -19,7 +19,7 @@
     </tr>
     @if (Model.Categories != null)
     {
-        int i = 0;
+        int i = (Model.PageIndex - 1) * Model.PageSize;
         foreach (var cat in Model.Categories)
         {
             <tr>
@@ -43,12 +43,20 @@
 
 <nav aria-label="...">
     <ul class="pagination justify-content-end">
-        <li class="page-item"><a href="#" class="page-link">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item active">
-            <a class="page-link" href="#" aria-current="page">2</a>
+        <li class="page-item @((Model.PageIndex==1)?"disabled":"")">
+            <a asp-action="Index" asp-controller="Category"
+               asp-route-pageIndex="@(Model.PageIndex-1)" asp-route-pageSize="@Model.PageSize" class="page-link">Trang trước</a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <li class="page-item @((Model.PageIndex == i)?"active":"")">
+                <a asp-action="Index" asp-controller="Category"
+               asp-route-pageIndex="@i" asp-route-pageSize="@Model.PageSize" class="page-link">@i</a>
+            </li>
+        }
+        <li class="page-item @((Model.PageIndex == Model.PageCount)?"disabled" : "")">
+            <a class="page-link" asp-action="Index" asp-controller="Category"
+               asp-route-pageIndex="@(Model.PageIndex+1)" asp-route-pageSize="@Model.PageSize">Trang sau</a>
+        </li>
     </ul>
 </nav>

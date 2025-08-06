@@ -1,0 +1,14 @@
+﻿<h1>Thêm mới danh mục sản phẩm</h1>
+<form asp-action="Create" asp-controller="Category" method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên danh mục<span class="text-danger">*</span></label>
+        <input required class="form-control" name="tenDanhMuc" type="text" placeholder="Nhập tên danh mục" />
+    </div>
+    <div>
+        <a class="btn btn-secondary me-3" asp-action="Index" asp-controller="Category">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
+        <button class="btn btn-success" type="submit">
+            <i class="fa-solid fa-check"></i> Đồng ý</button>
+    </div>
+</form>
