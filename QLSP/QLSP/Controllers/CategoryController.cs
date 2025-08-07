@@ -20,6 +20,8 @@ namespace QLSP.Controllers
             };
             CategoryViewModel model = new CategoryViewModel();
             model.KeyWord = keyWord;
+            if (TempData["message"] != null)
+                model.Message = TempData["message"].ToString();
             if (string.IsNullOrEmpty(keyWord))
             {
                 var ls = _context.Categories.
@@ -64,6 +66,7 @@ namespace QLSP.Controllers
                 };
                 _context.Categories.Add(category);
                 _context.SaveChanges();
+                TempData["message"] = "Đã thêm mới thành công";
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -88,6 +91,7 @@ namespace QLSP.Controllers
             {
                 category.Name = model.Request.Name;
                 _context.SaveChanges();
+                TempData["message"] = "Đã cập nhật thành công";
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -116,6 +120,7 @@ namespace QLSP.Controllers
             {
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
+                TempData["message"] = "Đã xóa thành công";
             }
             return RedirectToAction(nameof(Index));
         }
@@ -136,6 +141,7 @@ namespace QLSP.Controllers
         public CategoryDTO Request { get; set; }
         public CategoryDTO Response { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string Message { get; set; }
     }
     public class CategoryDTO
     {

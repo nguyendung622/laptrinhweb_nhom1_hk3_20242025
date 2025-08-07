@@ -1,20 +1,12 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace QLSP.Models
+﻿namespace QLSP.DTO
 {
-    public class Product
+    public class ProductDTO
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public string Avatar { get; set; }
         public int CategoryId { get; set; }
-        [ForeignKey(nameof(CategoryId))]
-        public Category Category { get; set; }
     }
 }

@@ -3,8 +3,9 @@
 
 <h1>Danh sách Danh mục Sản phẩm</h1>
 <div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" asp-controller="Category" class="btn btn-success me-1"><i class="fa-solid fa-plus"></i> Thêm</a>
-    <button data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm V2</button>
+    @*<a asp-action="Create" asp-controller="Category" class="btn btn-success me-1"><i class="fa-solid fa-plus"></i> Thêm</a>*@
+    <button class="btn btn-primary me-1"><i class="fa fa-file-excel" aria-hidden="true"></i> Import từ Excel</button>
+    <button data-bs-toggle="modal" data-bs-target="#addModal" class="btn btn-success"><i class="fa-solid fa-plus"></i> Thêm</button>
 </div>
 <form asp-controller="Category" asp-action="Index" class="d-flex g-3">
     <div class="flex-grow-1 me-3">
@@ -33,7 +34,8 @@
                 <td>
                     @*<a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
             <a asp-action="Delete" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>*@
-                    <a asp-action="Update" asp-controller="Category" asp-route-id="@category.Id" class="btn btn-primary"><i class="fa-solid fa-pencil"></i> Sửa</a>
+                    <button data-bs-toggle="modal" data-bs-target="#updateModal_@category.Id" class="btn btn-primary">
+                        <i class="fa-solid fa-pencil"></i> Sửa</button>
                     <button data-bs-toggle="modal" data-bs-target="#deleteModal_@category.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
                 </td>
             </tr>
@@ -66,6 +68,30 @@
 
 </table>
 
+@if (!string.IsNullOrEmpty(Model.Message)){
+    <div class="alert alert-primary mt-3">
+        @Model.Message
+    </div>
+
+    <!-- Modal Thông báo -->
+    <div class="modal fade" id="noticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @Model.Message
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <!-- Modal Add -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -77,6 +103,31 @@
 {
     foreach (var cat in Model.Categories)
     {
+        <!-- Modal Update -->
+        <div class="modal fade" id="updateModal_@cat.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form asp-action="Update" asp-controller="Category" method="post">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Cập nhật danh mục</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nameCategory" class="form-label">Tên danh mục</label>
+                                <input type="text" class="form-control" asp-for="Request.Name" value="@cat.Name">
+                                <input type="hidden" class="form-control" asp-for="Request.Id" value="@cat.Id">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                            <button type="submit" class="btn btn-primary">Đồng ý</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--End Modal-->
         <!-- Modal Delete -->
         <div class="modal fade" id="deleteModal_@cat.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">

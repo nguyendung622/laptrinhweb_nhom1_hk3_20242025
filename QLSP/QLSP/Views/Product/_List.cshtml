@@ -1,0 +1,59 @@
+﻿@using QLSP.ViewModel
+@model ProductViewModel
+
+<table class="table table-hover table-bordered">
+    <tr class="table-success">
+        <th>STT</th>
+        <th>Tên sản phẩm</th>
+        <th>Số lượng</th>
+        <th>Giá</th>
+        <th>Hình đại diện</th>
+        <th>Danh mục</th>
+        <th>Thao tác</th>
+    </tr>
+    @if (Model.Products != null && Model.Products.Count > 0)
+    {
+        int index = 0;
+        foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@(++index)</td>
+                <td>@product.Name</td>
+                <td>@product.Quantity</td>
+                <td>@product.Price.ToString("N0")</td>
+                <td></td>
+                <td>@product.CategoryId</td>
+                <td>
+                    <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn btn-primary">
+                        <i class="fa-solid fa-pencil"></i> Sửa
+                    </button>
+                    <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i> Xóa
+                    </button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td class="text-center" colspan="7">Không có sản phẩm nào cả</td>
+        </tr>
+    }
+</table>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+</nav>
