@@ -1,0 +1,50 @@
+﻿@using QLSP.ViewModel
+@model ProductViewModel
+<form onsubmit="return onCreateProduct(this);" asp-action="CreateAjax" method="post" enctype="multipart/form-data">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới sản phẩm</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="idCategory" class="form-label">
+                    Danh mục sản phẩm
+                </label>
+                <select id="idCategory" asp-for="Request.CategoryId" class="form-control">
+                    @if (Model.Categories != null)
+                    {
+                        foreach (var cat in Model.Categories)
+                        {
+                            <option value="@cat.Id">@cat.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="nameProduct" class="form-label">Tên sản phẩm</label>
+                <input type="text" class="form-control" id="nameProduct"
+                       asp-for="Request.Name">
+            </div>
+            <div class="mb-3">
+                <label for="priceProduct" class="form-label">Giá sản phẩm</label>
+                <input type="number" step="0.1" class="form-control" id="priceProduct"
+                       asp-for="Request.Price">
+            </div>
+            <div class="mb-3">
+                <label for="priceProduct" class="form-label">Số lượng sản phẩm</label>
+                <input type="number" class="form-control" id="priceProduct"
+                       asp-for="Request.Quantity">
+            </div>
+            <div class="mb-3">
+                <label for="priceProduct" class="form-label">Hình đại diện</label>
+                <input type="file" accept="image/*" class="form-control" id="priceProduct"
+                       asp-for="Request.FormFileAvatar">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+            <button type="submit" class="btn btn-primary">Đồng ý</button>
+        </div>
+    </div>
+</form>

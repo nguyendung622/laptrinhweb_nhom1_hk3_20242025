@@ -1,8 +1,10 @@
-﻿<h1>Thêm mới danh mục sản phẩm</h1>
+﻿@using QLSPNhom2.ViewModel
+@model CategoryViewModel
+<h1>Thêm mới danh mục sản phẩm</h1>
 <form asp-action="Create" asp-controller="Category" method="post">
     <div class="mb-3">
         <label class="form-label">Tên danh mục<span class="text-danger">*</span></label>
-        <input required class="form-control" name="tenDanhMuc" type="text" placeholder="Nhập tên danh mục" />
+        <input asp-for="Request.Name" required class="form-control" type="text" placeholder="Nhập tên danh mục" />
     </div>
     <div>
         <a class="btn btn-secondary me-3" asp-action="Index" asp-controller="Category">

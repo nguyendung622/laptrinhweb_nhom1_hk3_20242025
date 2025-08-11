@@ -29,10 +29,10 @@ namespace QLSPNhom2.Controllers
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .Select(e => new CategoryDTO
-            {
-                Id = e.Id,
-                Name = e.Name
-            }).ToList();
+                {
+                    Id = e.Id,
+                    Name = e.Name
+                }).ToList();
             return View(model);
         }
 
@@ -42,12 +42,65 @@ namespace QLSPNhom2.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(String tenDanhMuc)
+        public IActionResult Create(CategoryViewModel model)
         {
             var cat = new Category();
-            cat.Name = tenDanhMuc;
+            cat.Name = model.Request.Name;
             _context.Categories.Add(cat);
             _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var cat = _context.Categories.Where(e => e.Id == id).Select(e => new CategoryDTO
+            {
+                Id = e.Id,
+                Name = e.Name,
+            }).FirstOrDefault();
+            var categoryViewModel = new CategoryViewModel();
+            categoryViewModel.Response = cat;
+            return View(categoryViewModel);
+        }
+        [HttpPost]
+        public IActionResult Update(CategoryViewModel model)
+        {
+            var cat = _context.Categories.Where(e => e.Id == model.Request.Id).FirstOrDefault();
+            if (cat != null)
+            {
+                cat.Name = model.Request.Name;
+                _context.SaveChanges();
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var cat = _context.Categories.Where(e => e.Id == id).Select(e => new CategoryDTO
+            {
+                Id = e.Id,
+                Name = e.Name,
+            }).FirstOrDefault();
+            var categoryViewModel = new CategoryViewModel();
+            categoryViewModel.Response = cat;
+            return View(categoryViewModel);
+        }
+        [HttpPost]
+        public IActionResult Delete(CategoryViewModel model)
+        {
+            var cat = _context.Categories.Where(e => e.Id == model.Request.Id).FirstOrDefault();
+            if (cat != null)
+            {
+                var products = _context.Products.Where(e => e.IdCategory == model.Request.Id).ToList();
+                if (products.Count > 0)
+                {
+                    _context.Products.RemoveRange(products);
+                }
+                _context.Categories.Remove(cat);
+                _context.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
     }

@@ -1,0 +1,15 @@
+﻿@using QLSPNhom2.ViewModel
+@model CategoryViewModel
+<h1>Xóa danh mục sản phẩm</h1>
+<form asp-action="Delete" asp-controller="Category" method="post">
+    <p>Bạn có chắc là muốn xóa đối tượng này không?</p>
+    <div>
+        <a class="btn btn-secondary me-3" asp-action="Index" asp-controller="Category">
+            <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </a>
+        <input type="hidden" asp-for="Request.Id" value="@Model.Response.Id" />
+        <button class="btn btn-success" type="submit">
+            <i class="fa-solid fa-check"></i> Đồng ý
+        </button>
+    </div>
+</form>

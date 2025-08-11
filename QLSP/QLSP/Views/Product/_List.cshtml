@@ -21,7 +21,12 @@
                 <td>@product.Name</td>
                 <td>@product.Quantity</td>
                 <td>@product.Price.ToString("N0")</td>
-                <td></td>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.Avatar))
+                    {
+                        <img style="width:100px" src="@product.Avatar" />
+                    }
+                </td>
                 <td>@product.CategoryId</td>
                 <td>
                     <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn btn-primary">

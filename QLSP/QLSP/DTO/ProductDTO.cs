@@ -8,5 +8,6 @@
         public int Quantity { get; set; }
         public string Avatar { get; set; }
         public int CategoryId { get; set; }
+        public IFormFile FormFileAvatar { get; set; }
     }
 }

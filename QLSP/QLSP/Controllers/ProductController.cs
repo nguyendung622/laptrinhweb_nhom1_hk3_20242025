@@ -8,9 +8,11 @@ namespace QLSP.Controllers
     public class ProductController : Controller
     {
         private readonly AppDbContext _context;
-        public ProductController(AppDbContext context)
+        private readonly IWebHostEnvironment _env;
+        public ProductController(AppDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -52,6 +54,64 @@ namespace QLSP.Controllers
             var model = new ProductViewModel();
             model.Products = products;
             return PartialView("_List", model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync(ProductViewModel model)
+        {
+            var dto = model.Request;
+            var product = new Product
+            {
+                Name = dto.Name,
+                Price = dto.Price,
+                Quantity = dto.Quantity,
+                CategoryId = dto.CategoryId,
+                Avatar = ""
+            };
+            if (dto.FormFileAvatar != null && dto.FormFileAvatar.Length > 0)
+            { 
+                var folder = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(folder);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.FormFileAvatar.FileName);
+                var filePath = Path.Combine(folder, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.FormFileAvatar.CopyToAsync(fileStream);
+                }
+                product.Avatar = $"/uploads/{fileName}";
+            }
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateAjax(ProductViewModel model)
+        {
+            var dto = model.Request;
+            var product = new Product
+            {
+                Name = dto.Name,
+                Price = dto.Price,
+                Quantity = dto.Quantity,
+                CategoryId = dto.CategoryId,
+                Avatar = ""
+            };
+            if (dto.FormFileAvatar != null && dto.FormFileAvatar.Length > 0)
+            {
+                var folder = Path.Combine(_env.WebRootPath, "uploads");
+                Directory.CreateDirectory(folder);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.FormFileAvatar.FileName);
+                var filePath = Path.Combine(folder, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.FormFileAvatar.CopyToAsync(fileStream);
+                }
+                product.Avatar = $"/uploads/{fileName}";
+            }
+
+            _context.Products.Add(product);
+            _context.SaveChanges();
+            return Ok(new {message = "Đã thêm mới thành công"});
         }
     }
 }

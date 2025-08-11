@@ -1,7 +1,7 @@
 ﻿@model QLSPNhom2.ViewModel.CategoryViewModel
 <h1>Danh sách Danh mục Sản phẩm</h1>
 <div class="d-flex justify-content-end">
-    <a asp-action="Create" asp-controller="Category" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</a>
+    <button data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</button>
 </div>
 <form asp-controller="Category" asp-action="Index" method="post">
     <div class="d-flex mt-3 mb-3">
@@ -9,54 +9,5 @@
         <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
     </div>
 </form>
-
-<table class="table table-hover table-bordered">
-    <tr class="table-primary text-center">
-        <th>STT</th>
-        <th>Mã danh mục</th>
-        <th>Tên danh mục</th>
-        <th>Thao tác</th>
-    </tr>
-    @if (Model.Categories != null)
-    {
-        int i = (Model.PageIndex - 1) * Model.PageSize;
-        foreach (var cat in Model.Categories)
-        {
-            <tr>
-                <td>@(++i)</td>
-                <td>@cat.Id</td>
-                <td>@cat.Name</td>
-                <td>
-                    <button class="btn btn-success"><i class="fa-solid fa-pencil"></i> Sửa</button>
-                    <button class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
-                </td>
-            </tr>
-        }
-    }
-    else
-    {
-        <tr>
-            <td colspan="3">Không có danh mục nào</td>
-        </tr>
-    }
-</table>
-
-<nav aria-label="...">
-    <ul class="pagination justify-content-end">
-        <li class="page-item @((Model.PageIndex==1)?"disabled":"")">
-            <a asp-action="Index" asp-controller="Category"
-               asp-route-pageIndex="@(Model.PageIndex-1)" asp-route-pageSize="@Model.PageSize" class="page-link">Trang trước</a>
-        </li>
-        @for (int i = 1; i <= Model.PageCount; i++)
-        {
-            <li class="page-item @((Model.PageIndex == i)?"active":"")">
-                <a asp-action="Index" asp-controller="Category"
-               asp-route-pageIndex="@i" asp-route-pageSize="@Model.PageSize" class="page-link">@i</a>
-            </li>
-        }
-        <li class="page-item @((Model.PageIndex == Model.PageCount)?"disabled" : "")">
-            <a class="page-link" asp-action="Index" asp-controller="Category"
-               asp-route-pageIndex="@(Model.PageIndex+1)" asp-route-pageSize="@Model.PageSize">Trang sau</a>
-        </li>
-    </ul>
-</nav>
+<partial name="_List" model="@Model" />
+<partial name="_Create" model="@Model" />
