@@ -1,0 +1,120 @@
+﻿@using QLSPNhom2.ViewModel
+@model ProductViewModel
+<h1>Quản lý sản phẩm</h1>
+<div class="d-flex justify-content-end">
+    <button data-bs-toggle="modal" data-bs-target="#createModal" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Thêm mới</button>
+</div>
+<form method="post">
+    <div class="mb-3">
+        <label>Danh mục</label>
+        <select class="form-control">
+            <option>Tất cả</option>
+            @if (Model.Categories != null)
+            {
+                foreach (var cat in Model.Categories)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            }
+        </select>
+    </div>
+
+    <div class="d-flex mt-3 mb-3">
+        <input name="keyWord" class="flex-grow-1 me-1 form-control" type="text" placeholder="Nhập từ khóa cần tìm" />
+        <button type="submit" class="btn btn-success"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+    </div>
+</form>
+<table class="table table-hover table-bordered">
+    <tr class="table-success">
+        <th>STT</th>
+        <th>Tên sản phẩm</th>
+        <th>Giá</th>
+        <th>Số lượng</th>
+        <th>Hình đại diện</th>
+        <th>Danh mục</th>
+        <th>Thao tác</th>
+    </tr>
+    @if (Model.Products != null && Model.Products.Count > 0)
+    {
+        int index = 0;
+        foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>@(++index)</td>
+                <td>@product.Name</td>
+                <td>@product.Price</td>
+                <td>@product.Quantity</td>
+                <td>...</td>
+                <td>...</td>
+                <td>
+                    <button class="btn btn-primary">Chỉnh sửa</button>
+                    <button class="btn btn-danger">Xóa</button>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td colspan="7">Không có sản phẩm nào cả</td></tr>
+    }
+
+</table>
+<nav aria-label="...">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a href="#" class="page-link">Trang trước</a>
+        </li>
+        <li class="page-item">
+            <a href="#" class="page-link">1</a>
+        </li>
+        <li class="page-item">
+            <a href="#" class="page-link">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">Trang sau</a>
+        </li>
+    </ul>
+</nav>
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới sản phẩm</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Danh mục<span class="text-danger">*</span></label>
+                        <select class="form-control">
+                            <option>Computer Science1</option>
+                            <option>Computer Science2</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tên sản phẩm<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Giá sản phẩm<span class="text-danger">*</span></label>
+                        <input type="number" step="0.1" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng sản phẩm<span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hình sản phẩm<span class="text-danger">*</span></label>
+                        <input type="file" accept="image/*" class="form-control" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

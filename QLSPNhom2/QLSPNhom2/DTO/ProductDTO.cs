@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QLSPNhom2.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace QLSPNhom2.Models
+namespace QLSPNhom2.DTO
 {
-    [Table("Product")]
-    public class Product
+    public class ProductDTO
     {
-        [Key]
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -15,7 +13,5 @@ namespace QLSPNhom2.Models
         public int Quantity { get; set; }
         public string Avatar { get; set; }
         public long IdCategory { get; set; }
-        [ForeignKey("IdCategory")]
-        public Category Category { get; set; }
     }
 }

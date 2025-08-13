@@ -11,3 +11,11 @@
 </form>
 <partial name="_List" model="@Model" />
 <partial name="_Create" model="@Model" />
+@if (Model.Categories!=null){
+    foreach(var cat in Model.Categories)
+    {
+        Model.Response = cat;
+        <partial name="_Update" model="@Model" />
+        <partial name="_Delete" model="@Model" />
+    }
+}

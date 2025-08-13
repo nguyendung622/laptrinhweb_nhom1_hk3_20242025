@@ -16,8 +16,8 @@
                 <td>@cat.Id</td>
                 <td>@cat.Name</td>
                 <td>
-                    <a asp-route-id="@cat.Id" asp-action="Update" asp-controller="Category" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Sửa</a>
-                    <a asp-route-id="@cat.Id" asp-action="Delete" asp-controller="Category" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</a>
+                    <button data-bs-toggle="modal" data-bs-target="#updateModal_@cat.Id" class="btn btn-success"><i class="fa-solid fa-pencil"></i> Sửa</button>
+                    <button data-bs-toggle="modal" data-bs-target="#deleteModal_@cat.Id" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Xóa</button>
                 </td>
             </tr>
         }

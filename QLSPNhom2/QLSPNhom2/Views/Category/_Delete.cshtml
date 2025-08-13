@@ -1,0 +1,23 @@
+﻿@model QLSPNhom2.ViewModel.CategoryViewModel
+<!-- Modal Delete -->
+<div class="modal fade" id="deleteModal_@Model.Response.Id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form asp-action="Delete" asp-controller="Category" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Xóa danh mục sản phẩm</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Bạn có chắc là muốn xóa danh mục này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" asp-for="Request.Id" value="@Model.Response.Id" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ qua</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
