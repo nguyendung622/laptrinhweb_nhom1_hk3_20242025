@@ -1,6 +1,6 @@
 ﻿@using QLSP.ViewModel
 @model ProductViewModel
-<form onsubmit="return onCreateProduct(this);" asp-action="CreateAjax" method="post" enctype="multipart/form-data">
+<form onsubmit="return onCreateProduct(event, this);" asp-action="CreateAjax" method="post" enctype="multipart/form-data">
     <div class="modal-content">
         <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm mới sản phẩm</h1>

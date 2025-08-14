@@ -7,13 +7,15 @@ $("#category").change(function () {
     var idCategory = $(this).val();
     $("#product").load("/Product/LoadProduct?idCategory=" + idCategory);
 });
-function onCreateProduct(form) {
-    e.preventDefault();
-    var formData = FormData(form);
+function onCreateProduct(event, form) {
+    event.preventDefault();
+    var formData = new FormData(form);
     $.ajax({
         type: form.type,
         url: form.action,
         data: formData,
+        contentType: false,
+        processData: false,
         success: function (mess) {
             alert('Thêm thành công');
             var idCategory = $("#category").val();
