@@ -2,6 +2,7 @@
 using QLSP.DTO;
 using QLSP.Models;
 using QLSP.ViewModel;
+using System.Drawing.Printing;
 
 namespace QLSP.Controllers
 {
@@ -14,9 +15,30 @@ namespace QLSP.Controllers
             _context = context;
             _env = env;
         }
-        public IActionResult Index()
+        public IActionResult Index(int pageIndex = 1, int pageSize = 5)
         {
+            var pagingInfo = new PagingInfo
+            {
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+                Total = _context.Products.Count()
+            };
+            var products = _context.Products
+                .Skip(pagingInfo.PageSize * (pagingInfo.PageIndex - 1))
+                .Take(pagingInfo.PageSize)
+                .Select(e => new ProductDTO
+                {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Price = e.Price,
+                    Avatar = e.Avatar,
+                    CategoryId = e.CategoryId,
+                    Quantity = e.Quantity
+                }).ToList();
+
             var model = new ProductViewModel();
+            model.Products = products;
+            model.PagingInfo = pagingInfo;
             var cats = _context.Categories.Select(e => new CategoryDTO
             {
                 Id = e.Id,
@@ -24,24 +46,31 @@ namespace QLSP.Controllers
             }).ToList();
             model.Categories = cats;
 
-            var products = _context.Products.Select(e => new ProductDTO
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Price = e.Price,
-                Avatar = e.Avatar,
-                CategoryId = e.CategoryId,
-                Quantity = e.Quantity
-            }).ToList();
-            model.Products = products;
-
             return View(model);
         }
 
-        public IActionResult LoadProduct(int idCategory)
+        public IActionResult LoadProduct(
+            int pageIndex = 1, int pageSize = 5,
+            int idCategory = 0, string keyWord = "")
         {
-            var products = _context.Products
-                .Where(e => (idCategory == 0 ? true : e.CategoryId == idCategory))
+            var pagingInfo = new PagingInfo
+            {
+                PageSize = pageSize,
+                PageIndex = pageIndex,
+            };
+            IQueryable<Product> products = _context.Products;
+            if (idCategory != 0)
+            {
+                products = products.Where(e => e.CategoryId == idCategory);
+            }
+            if (!string.IsNullOrEmpty(keyWord))
+            {
+                products = products.Where(e => e.Name.Contains(keyWord));
+            }
+            pagingInfo.Total = products.Count();
+            var ls = products
+                .Skip(pagingInfo.PageSize * (pagingInfo.PageIndex - 1))
+                .Take(pagingInfo.PageSize)
                 .Select(e => new ProductDTO
                 {
                     Id = e.Id,
@@ -52,7 +81,8 @@ namespace QLSP.Controllers
                     CategoryId = e.CategoryId
                 }).ToList();
             var model = new ProductViewModel();
-            model.Products = products;
+            model.Products = ls;
+            model.PagingInfo = pagingInfo;
             return PartialView("_List", model);
         }
         [HttpPost]
@@ -68,7 +98,7 @@ namespace QLSP.Controllers
                 Avatar = ""
             };
             if (dto.FormFileAvatar != null && dto.FormFileAvatar.Length > 0)
-            { 
+            {
                 var folder = Path.Combine(_env.WebRootPath, "uploads");
                 Directory.CreateDirectory(folder);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.FormFileAvatar.FileName);
@@ -111,7 +141,29 @@ namespace QLSP.Controllers
 
             _context.Products.Add(product);
             _context.SaveChanges();
-            return Ok(new {message = "Đã thêm mới thành công"});
+            return Ok(new { message = "Đã thêm mới thành công" });
+        }
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+            var model = new ProductViewModel();
+            model.Response = _context.Products.Where(e => e.Id == id).Select(e => new ProductDTO
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Price = e.Price,
+                Avatar = e.Avatar,
+                CategoryId = e.CategoryId,
+                Quantity = e.Quantity
+            }).First();
+            var cats = _context.Categories.Select(e => new CategoryDTO
+            {
+                Id = e.Id,
+                Name = e.Name
+            }).ToList();
+            model.Categories = cats;
+            return PartialView("_Update",model);
         }
     }
 }

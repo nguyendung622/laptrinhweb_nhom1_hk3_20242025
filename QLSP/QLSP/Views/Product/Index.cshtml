@@ -2,7 +2,7 @@
 @model ProductViewModel
 <h1>Danh sách Sản phẩm</h1>
 
-<form asp-controller="Product" asp-action="Index">
+<form>
     <div class="mb-3">
         <label class="form-label">Danh mục</label>
         <select id="category" class="form-control">
@@ -18,10 +18,10 @@
     </div>
     <div class="d-flex g-3">
         <div class="flex-grow-1 me-3">
-            <input type="text" class="form-control" id="keyWord" name="keyWord" placeholder="Nhập từ cần tìm">
+            <input onkeypress="onEnterSearch(event)" type="text" class="form-control" id="keyWord" name="keyWord" placeholder="Nhập từ cần tìm">
         </div>
         <div class="">
-            <button type="submit" class="btn btn-info mb-3"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+            <button onclick="onSearch()" type="button" class="btn btn-info mb-3"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
         </div>
     </div>
 </form>
@@ -40,5 +40,29 @@
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <partial name="_Create" model="@Model" />
+    </div>
+</div>
+
+
+<!-- Modal Update -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="contentViewUpdate" class="modal-dialog">
+        
+    </div>
+</div>
+
+
+
+<div id="toast" class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <img src="..." class="rounded me-2" alt="...">
+            <strong class="me-auto">Thông báo</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div id="toastMessage" class="toast-body">
+            Nội dung thông báo
+        </div>
     </div>
 </div>

@@ -1,6 +1,49 @@
 ﻿@using QLSP.ViewModel
 @model ProductViewModel
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        @{
+            var pre = Model.PagingInfo.PageIndex - 1;
+            if (pre == 0)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#" onclick="onPaging(@pre)">Previous</a>
+                </li>
+            }
+        }
 
+        @for (int i = 1; i <= Model.PagingInfo.PageCount; i++)
+        {
+            <li class="page-item @(Model.PagingInfo.PageIndex==i?"active":"")">
+                <a class="page-link" href="#" onclick="onPaging(@i)">@i</a>
+            </li>
+        }
+
+        @{
+            var next = Model.PagingInfo.PageIndex + 1;
+            if (next > Model.PagingInfo.PageCount)
+            {
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="#" onclick="onPaging(@next)">Next</a>
+                </li>
+            }
+        }
+
+
+    </ul>
+</nav>
 <table class="table table-hover table-bordered">
     <tr class="table-success">
         <th>STT</th>
@@ -13,7 +56,7 @@
     </tr>
     @if (Model.Products != null && Model.Products.Count > 0)
     {
-        int index = 0;
+        int index = Model.PagingInfo.PageSize * (Model.PagingInfo.PageIndex - 1);
         foreach (var product in Model.Products)
         {
             <tr>
@@ -29,7 +72,7 @@
                 </td>
                 <td>@product.CategoryId</td>
                 <td>
-                    <button data-bs-toggle="modal" data-bs-target="#updateModal" class="btn btn-primary">
+                    <button onclick="loadViewUpdate(@product.Id)" data-bs-toggle="modal" data-bs-target="#updateModal" class="btn btn-primary">
                         <i class="fa-solid fa-pencil"></i> Sửa
                     </button>
                     <button data-bs-toggle="modal" data-bs-target="#deleteModal" class="btn btn-danger">
@@ -46,19 +89,3 @@
         </tr>
     }
 </table>
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">1</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">2</a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-        </li>
-    </ul>
-</nav>
